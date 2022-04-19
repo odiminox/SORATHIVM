@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\common.h" />
+    <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\math.h" />
     <ClInclude Include="source\types.h" />
   </ItemGroup>

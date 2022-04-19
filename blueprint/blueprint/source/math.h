@@ -262,12 +262,12 @@ FORCEINLINE m4 m4_z_rotation(f32 a)
     return rotz;
 }
 
-FORCEINLINE m4 frustrum(f32 l, f32 r, f32 b, f32 t, f32 np, f32 fp)
+FORCEINLINE m4 frustrum(f32 l, f32 r, f32 bot, f32 t, f32 np, f32 fp)
 {
     const f32 a = 2.0f * np / (r - l);
-    const f32 b = 2.0f * np / (t - b);
+    const f32 b = 2.0f * np / (t - bot);
     const f32 c = (r + l) / (r - l);
-    const f32 d = (t + b) / (t - b);
+    const f32 d = (t + bot) / (t - bot);
     const f32 e = -(fp + np) / (fp - np);
     const f32 f = -l;
     const f32 g = -(2 * fp * np) / (fp - np);

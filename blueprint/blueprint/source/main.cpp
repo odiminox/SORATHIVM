@@ -1,7 +1,7 @@
 #include<windows.h>
-#include "math.h"
+
+#include "graphics.h"
 
 int main(int argc, char* argv[])
 {
-  v3 vec;
 }
