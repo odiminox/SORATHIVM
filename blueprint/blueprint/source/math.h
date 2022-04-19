@@ -53,8 +53,6 @@ FORCEINLINE v3 cross_product(const v3& a, const v3& b)
   return { x, y, z };
 }
 
-
-
 union v4
 {
   f32 v[4];
@@ -68,6 +66,33 @@ FORCEINLINE v4 operator /(const v4& a, f32 s) { s = 1.0f / s; return { a.x / s, 
 FORCEINLINE v4 operator -(const v4& a) { return { -a.x, -a.y, -a.z, - a.w }; }
 FORCEINLINE bool operator ==(const v4& a, const v4& b) { a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w; }
 FORCEINLINE bool operator !=(const v4& a, const v4& b) { a.x != b.x || a.y != b.y || a.z != b.z || a.w != b.w; }
+
+FORCEINLINE v2 v2_make(f32 x, f32 y)
+{
+    v2 vec;
+    vec.x = x;
+    vec.y = y;
+    return vec;
+}
+
+FORCEINLINE v3 v3_make(f32 x, f32 y, f32 z)
+{
+    v3 vec;
+    vec.x = x;
+    vec.y = y;
+    vec.z = z;
+    return vec;
+}
+
+FORCEINLINE v4 v4_make(f32 x, f32 y, f32 z, f32 w = 1.0f)
+{
+    v4 vec;
+    vec.x = x;
+    vec.y = y;
+    vec.z = z;
+    vec.w = w;
+    return vec;
+}
 
 union m4
 {
@@ -147,11 +172,125 @@ FORCEINLINE m4 operator *(m4& a, m4& b)
              m30, m31, m32, m33 };
 }
 
-
+const m4 identity = 
+{ {
+    { 1, 0, 0, 0 },
+    { 0, 1, 0, 0 },
+    { 0, 0, 1, 0 },
+    { 0, 0, 0, 1 }
+} };
 
 FORCEINLINE f32 m4_determinant(const m4& m)
 {
     return m(0, 0) * m(1, 1) * m(2, 2) - m(1, 2) * m(2, 1) +
         m(0, 1) * m(1, 2) * m(2, 0) - m(1, 0) * m(2, 2) +
         m(2, 0) * m(1, 0) * m(2, 1) - m(1, 1) * m(2, 0);
+}
+
+FORCEINLINE m4 m4_scale(m4& m, v3& s)
+{
+    m4 scale =
+    { {
+        { s.x, 0, 0, 0 },
+        { 0, s.y, 0, 0 },
+        { 0, 0, s.z, 0 },
+        { 0, 0, 0,   1 }
+    } };
+
+    m4 res = scale * m;
+    return res;
+}
+
+FORCEINLINE m4 m4_translate(v3& t)
+{
+    m4 trans =
+    { {
+        { 0, 0, 0, t.x },
+        { 0, 0, 0, t.y },
+        { 0, 0, 0, t.z },
+        { 0, 0, 0, 1 }
+    } };
+
+    return trans;
+}
+
+FORCEINLINE m4 m4_x_rotation(f32 a)
+{
+    const f32 c = cos(a);
+    const f32 s = sin(a);
+
+    m4 rotx =
+    { {
+        { 1, 0, 0, 0 },
+        { 0, c,-s, 0 },
+        { 0, s, c, 0 },
+        { 0, 0, 0, 1 }
+    } };
+
+    return rotx;
+}
+
+FORCEINLINE m4 m4_y_rotation(f32 a)
+{
+    const f32 c = cos(a);
+    const f32 s = sin(a);
+
+    m4 roty =
+    { {
+        { c, 0, s, 0 },
+        { 0, 1, 0, 0 },
+        {-s, 0, c, 0 },
+        { 0, 0, 0, 1 }
+    } };
+
+    return roty;
+}
+
+FORCEINLINE m4 m4_z_rotation(f32 a)
+{
+    const f32 c = cos(a);
+    const f32 s = sin(a);
+
+    m4 rotz =
+    { {
+        { c, -s,0, 0 },
+        { s, c, 0, 0 },
+        { 0, 0, 0, 0 },
+        { 0, 0, 0, 1 }
+    } };
+
+    return rotz;
+}
+
+FORCEINLINE m4 frustrum(f32 l, f32 r, f32 b, f32 t, f32 np, f32 fp)
+{
+    const f32 a = 2.0f * np / (r - l);
+    const f32 b = 2.0f * np / (t - b);
+    const f32 c = (r + l) / (r - l);
+    const f32 d = (t + b) / (t - b);
+    const f32 e = -(fp + np) / (fp - np);
+    const f32 f = -l;
+    const f32 g = -(2 * fp * np) / (fp - np);
+    const f32 h = 0.0f;
+
+    m4 mat =
+    { {
+        { a, 0, c, 0 },
+        { 0, b, d, 0 },
+        { 0, 0, e, g },
+        { 0, 0, f, h }
+    } };
+
+    return mat;
+}
+
+FORCEINLINE m4 perspective(f32 fov, f32 aspect, f32 f, f32 b)
+{
+    f32 tangent = tanf(DEG2RAD((fov / 2)));
+    f32 height = f * tangent;
+    f32 width = height * aspect;
+
+    m4 mat = frustrum(-width, width, -height, height, f, b);
+
+    return mat;
 }
