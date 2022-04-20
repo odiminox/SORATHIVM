@@ -2,6 +2,9 @@
 
 #include <Windows.h>
 
+#include "graphics.h"
+#include "memory.h"
+
 LRESULT CALLBACK
 WindowProc(HWND window,
     UINT message,
@@ -66,6 +69,11 @@ WinMain(HINSTANCE hinstance,
         NULL);
 
     ShowWindow(hWnd, ncmdshow);
+
+    usize aligned = align(3);
+    ASSERT(aligned == 8);
+    aligned = align(12);
+    ASSERT(aligned == 16);
 
     MSG msg;
 

@@ -5,6 +5,7 @@
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\math.h" />
     <ClInclude Include="source\types.h" />
+    <ClInclude Include="source\memory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\win_platform.cpp" />
