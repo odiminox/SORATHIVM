@@ -25,6 +25,6 @@ typedef const char* CONST_STRING;
 
 void assert_handler(const char* msg, const char* file, int line)
 {
-    fprintf(stdout, "%s:%d:4: error: assertion \"%s\" failed in function %s\n", file, line, msg);
+    fprintf(stdout, "%s:%d:4: error: assertion \"%s\" failed in function \n", file, line, msg);
     abort();
 }

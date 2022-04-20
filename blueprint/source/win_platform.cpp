@@ -75,7 +75,20 @@ WinMain(HINSTANCE hinstance,
     aligned = align(12);
     ASSERT(aligned == 16);
 
-    MemArena* arena = create_arena(8);
+    {
+		MemArena* arena = alloc_arena(16);
+		MemBlock* block = alloc_block(arena, 8);
+		MemBlock* block_two = alloc_block(arena, 8);
+        MemBlock* found = find_first_block(arena, 8);
+        ASSERT(found->size == 8)
+    }
+
+    {
+		MemArena* arena = alloc_arena(16);
+		MemBlock* block = alloc_block(arena, 16);
+		MemBlock* block_two = alloc_block(arena, 8);
+		usize size = sizeof(arena->buffer);
+    }
 
     MSG msg;
 

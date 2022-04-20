@@ -9,8 +9,8 @@ struct Uv
 
 struct Material
 {
-    STRING name;
     u32 id;
+    STRING name;
 };
 
 struct Texture
