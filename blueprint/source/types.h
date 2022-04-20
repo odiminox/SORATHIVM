@@ -17,7 +17,8 @@ typedef uint32_t  u32;
 typedef uint64_t  u64;
 
 typedef size_t    usize;
-typedef intptr_t  uword;
+typedef intptr_t  iword;
+typedef uintptr_t uword;
 
 typedef char* STRING;
 typedef const char* CONST_STRING;

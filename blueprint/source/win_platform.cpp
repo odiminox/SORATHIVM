@@ -75,6 +75,8 @@ WinMain(HINSTANCE hinstance,
     aligned = align(12);
     ASSERT(aligned == 16);
 
+    MemArena* arena = create_arena(8);
+
     MSG msg;
 
     // wait for the next message in the queue, store the result in 'msg'

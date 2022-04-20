@@ -12,7 +12,6 @@ struct MemArena
 {
     u8* buffer;
     usize total_size;
-    usize amount_used;
 };
 
 struct MemBlock
@@ -24,6 +23,20 @@ struct MemBlock
 };
 
 
-FORCEINLINE void allocate_arena(MemArena* arena, usize arena_size);
+FORCEINLINE MemArena* create_arena(usize size)
+{
+    size = align(size);
+    MemArena* arena = (MemArena*)malloc(sizeof(MemArena));
+    if (!arena) return NULL;
+    arena->buffer = (u8*)malloc(size);
+    arena->total_size = size;
+    return arena;
+}
+
+FORCEINLINE void allocate_arena(MemArena* arena, usize arena_size)
+{
+    
+}
+
 FORCEINLINE void destroy_arena(MemArena* arena);
-FORCEINLINE MemBlock* find_first_fit(MemArena& arena, usize size);
+FORCEINLINE MemBlock* find_first_fit(MemArena* arena, usize size);
