@@ -11,6 +11,11 @@
 #undef UNICODE
 #endif
 
+#include <gl/GL.h>
+#include "khrplatform.h"
+#include "glext.h"
+#include "wglext.h"
+
 #include "graphics.h"
 #include "memory.h"
 
@@ -52,6 +57,8 @@ WinMain(HINSTANCE hinstance,
 {
     HWND hWnd;
     WNDCLASSEX wc;
+
+    HINSTANCE hdll = LoadLibrary(L"opengl32.dll");
 
     // clear out the window class for use
     ZeroMemory(&wc, sizeof(WNDCLASSEX));

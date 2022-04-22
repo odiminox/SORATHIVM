@@ -34,4 +34,4 @@
 blueprint/*vcproj*
 blueprint/x64
 blueprint/.vs
-vd
+vs
