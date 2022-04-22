@@ -1,5 +1,8 @@
 #pragma once
 
+#define WIN32_LEAN_AND_MEAN
+#define VC_EXTRALEAN
+
 #ifndef UNICODE
 #define UNICODE
 #define UNICODE_WAS_DEFINED
@@ -56,17 +59,10 @@ WindowProc(HWND window,
 
 void blueprint_init()
 {
-    usize aligned = align(3);
-    ASSERT(aligned == 8);
-    aligned = align(12);
-    ASSERT(aligned == 16);
-
     Vertex* vert = NULL;
-    u32 vert_size = sizeof(*vert);
     MemArena* arena = alloc_arena(64);
 
-    MemBlock* track = NULL;
-    MemBlock* block = alloc_block(arena, vert_size);
+    MemBlock* block = alloc_block(arena, sizeof(*vert));
     vert = (Vertex*)block;
     vert->pos.x = 1.0f;
     vert->pos.y = 2.0f;
@@ -206,6 +202,10 @@ WinMain(HINSTANCE hinstance,
 
     HGLRC rc_real = wglCreateContextAttribsARB(dc_real, 0, context_attribs);
 
+    /*wglMakeCurrent(dc, NULL);
+    wglDeleteContext(rc);
+    ReleaseDC(hwnd, dc);
+    DestroyWindow(hwnd);*/
     wglMakeCurrent(dc_real, rc_real);
 
     ShowWindow(hwnd_real, ncmdshow);
