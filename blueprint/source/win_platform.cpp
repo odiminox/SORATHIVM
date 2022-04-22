@@ -51,13 +51,13 @@ WinMain(HINSTANCE hinstance,
     wc.hInstance = hinstance;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-    wc.lpszClassName = L"Blueprint";
+    wc.lpszClassName = "Blueprint";
 
     RegisterClassEx(&wc);
 
     hWnd = CreateWindowEx(NULL,
-        L"Blueprint",
-        L"Blueprint",
+        "Blueprint",
+        "Blueprint",
         WS_OVERLAPPEDWINDOW,
         300,    // x-position of the window
         300,    // y-position of the window
@@ -76,22 +76,14 @@ WinMain(HINSTANCE hinstance,
     ASSERT(aligned == 16);
 
     {
-		MemArena* arena = alloc_arena(64);
+        MemArena* arena = alloc_arena(64);
 
         MemBlock* track = NULL;
-		MemBlock* block = alloc_block(arena, 8);
+        MemBlock* block = alloc_block(arena, 8);
         track = get_block(arena, 0);
 
         MemBlock* found = find_first_block(arena, 8);
         ASSERT(found->size == 8)
-        free_arena(arena);
-    }
-
-    {
-		MemArena* arena = alloc_arena(16);
-		MemBlock* block = alloc_block(arena, 16);
-		MemBlock* block_two = alloc_block(arena, 8);
-		usize size = sizeof(arena->buffer);
         free_arena(arena);
     }
 
