@@ -1,9 +1,19 @@
 #pragma once
 
+#ifndef UNICODE
+#define UNICODE
+#define UNICODE_WAS_DEFINED
+#endif
+
 #include <Windows.h>
+
+#ifdef UNICODE_WAS_DEFINED
+#undef UNICODE
+#endif
 
 #include "graphics.h"
 #include "memory.h"
+
 
 LRESULT CALLBACK
 WindowProc(HWND window,
@@ -51,13 +61,13 @@ WinMain(HINSTANCE hinstance,
     wc.hInstance = hinstance;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-    wc.lpszClassName = "Blueprint";
+    wc.lpszClassName = L"Blueprint";
 
     RegisterClassEx(&wc);
 
     hWnd = CreateWindowEx(NULL,
-        "Blueprint",
-        "Blueprint",
+        L"Blueprint",
+        L"Blueprint",
         WS_OVERLAPPEDWINDOW,
         300,    // x-position of the window
         300,    // y-position of the window
@@ -76,14 +86,18 @@ WinMain(HINSTANCE hinstance,
     ASSERT(aligned == 16);
 
     {
+        Vertex* vert = NULL;
+        u32 vert_size = sizeof(*vert);
         MemArena* arena = alloc_arena(64);
 
         MemBlock* track = NULL;
-        MemBlock* block = alloc_block(arena, 8);
-        track = get_block(arena, 0);
+        MemBlock* block = alloc_block(arena, vert_size);
+        vert = (Vertex*)block;
+        vert->pos.x = 1.0f;
+        vert->pos.y = 2.0f;
+        vert->pos.z = 3.0f;
 
-        MemBlock* found = find_first_block(arena, 8);
-        ASSERT(found->size == 8)
+
         free_arena(arena);
     }
 
