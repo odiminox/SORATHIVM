@@ -12,18 +12,67 @@ union v2
   struct { f32 x, y; };
 };
 
-FORCEINLINE v2 operator +(const v2& a, const v2& b) { return { a.x + b.x, a.y + b.y }; }
-FORCEINLINE v2 operator -(const v2& a, const v2& b) { return { a.x - b.x, a.y - b.y }; }
-FORCEINLINE v2 operator *(const v2& a, const f32 s) { return { a.x * s, a.y * s }; }
-FORCEINLINE v2 operator /(const v2& a, f32 s) { s = 1.0f / s; return { a.x / s, a.y / s }; }
-FORCEINLINE v2 operator -(const v2& a) { return { -a.x, -a.y }; }
-FORCEINLINE v2 operator /=(v2& a, f32 s) { return { a.x /= s, a.y /= s }; }
-FORCEINLINE bool operator ==(const v2& a, const v2& b) { a.x == b.x && a.y == b.y; }
-FORCEINLINE bool operator !=(const v2& a, const v2& b) { a.x != b.x || a.y != b.y; }
+FORCEINLINE v2 operator +(const v2& a, const v2& b)
+{
+    v2 buffer;
+    buffer.x = a.x + b.x;
+    buffer.y = a.y + b.y;
+    return buffer;
+}
 
+FORCEINLINE v2 operator -(const v2& a, const v2& b)
+{
+    v2 buffer;
+    buffer.x = a.x - b.x;
+    buffer.y = a.y - b.y;
+    return buffer; 
+}
+
+FORCEINLINE v2 operator *(const v2& a, const f32 s)
+{ 
+    v2 buffer;
+    buffer.x = a.x * s;
+    buffer.y = a.y * s;
+    return buffer;
+}
+
+FORCEINLINE v2 operator /(const v2& a, f32 s)
+{ 
+    s = 1.0f / s;
+    v2 buffer;
+    buffer.x = a.x / s;
+    buffer.y = a.y / s;
+    return buffer;
+}
+
+FORCEINLINE v2 operator -(const v2& a)
+{ 
+    v2 buffer;
+    buffer.x = -a.x;
+    buffer.y = -a.y;
+    return buffer;
+}
+
+FORCEINLINE v2 operator /=(v2& a, f32 s) 
+{
+    v2 buffer;
+    buffer.x /= s;
+    buffer.y /= s;
+    return buffer;
+}
+
+FORCEINLINE bool operator ==(const v2& a, const v2& b){ return a.x == b.x && a.y == b.y; }
+FORCEINLINE bool operator !=(const v2& a, const v2& b) { a.x != b.x || a.y != b.y; }
 FORCEINLINE f32 magnitude(const v2& v) { return sqrt((v.x * v.x) + (v.y * v.y)); }
 FORCEINLINE v2 normalise(const v2& v) { return v / magnitude(v); }
-FORCEINLINE v2 abs(const v2& a) { return { abs(a.x), abs(a.y) }; }
+FORCEINLINE v2 abs(const v2& a)
+{ 
+    v2 buffer;
+    buffer.x = abs(a.x);
+    buffer.y = abs(a.y);
+    return buffer;
+}
+
 FORCEINLINE f32 dot_product(const v2& a, const v2& b) { return (a.x * b.x) + (a.y * b.y); }
 
 union v3
@@ -32,18 +81,77 @@ union v3
   struct { f32 x, y, z; };
 };
 
-FORCEINLINE v3 operator +(const v3& a, const v3& b) { return { a.x + b.x, a.y + b.y, a.z + b.z }; }
-FORCEINLINE v3 operator -(const v3& a, const v3& b) { return { a.x - b.x, a.y - b.y, a.z - b.z }; }
-FORCEINLINE v3 operator *(const v3& a, const f32 s) { return { a.x * s, a.y * s, a.z * s }; }
-FORCEINLINE v3 operator /(const v3& a, f32 s) { s = 1.0f / s; return { a.x / s, a.y / s, a.z * s }; }
-FORCEINLINE v3 operator -(const v3& a) { return { -a.x, -a.y, -a.z }; }
-FORCEINLINE v3 operator /=(v3& a, f32 s) { return { a.x /= s, a.y /= s, a.z /= s }; }
+FORCEINLINE v3 operator +(const v3& a, const v3& b) 
+{ 
+    v3 buffer;
+    buffer.x = a.x + b.x;
+    buffer.y = a.y + b.y;
+    buffer.z = a.z + b.z;
+    return buffer;
+}
+
+FORCEINLINE v3 operator -(const v3& a, const v3& b)
+{
+    v3 buffer;
+    buffer.x = a.x - b.x;
+    buffer.y = a.y - b.y;
+    buffer.z = a.z - b.z;
+    return buffer; 
+}
+
+FORCEINLINE v3 operator *(const v3& a, const f32 s)
+{ 
+    v3 buffer;
+    buffer.x = a.x * s;
+    buffer.y = a.y * s;
+    buffer.z = a.z * s;
+    return buffer;
+}
+
+
+FORCEINLINE v3 operator /(const v3& a, f32 s)
+{ 
+    s = 1.0f / s;
+    v3 buffer;
+    buffer.x = a.x / s;
+    buffer.y = a.y / s;
+    buffer.z = a.z / s;
+    return buffer;
+}
+
+FORCEINLINE v3 operator -(const v3& a) 
+{ 
+    v3 buffer;
+    buffer.x = -a.x;
+    buffer.y = -a.y;
+    buffer.z = -a.z;
+    return buffer;
+}
+
+
+FORCEINLINE v3 operator /=(v3& a, f32 s)
+{
+    v3 buffer;
+    buffer.x /= s;
+    buffer.y /= s;
+    buffer.z /= s;
+    return buffer;
+}
+
 FORCEINLINE bool operator ==(const v3& a, const v3& b) { a.x == b.x && a.y == b.y && a.z == b.z; }
 FORCEINLINE bool operator !=(const v3& a, const v3& b) { a.x != b.x || a.y != b.y || a.z != b.z; }
 
 FORCEINLINE f32 magnitude(const v3 v) { return sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z)); }
 FORCEINLINE v3 normalise(const v3& v) { return v / magnitude(v); }
-FORCEINLINE v3 abs(const v3& a) { return { abs(a.x), abs(a.y), abs(a.z) }; }
+FORCEINLINE v3 abs(const v3& a)
+{ 
+    v3 buffer;
+    buffer.x = abs(a.x);
+    buffer.y = abs(a.y);
+    buffer.z = abs(a.y);
+    return buffer;
+}
+
 FORCEINLINE f32 dot_product(const v3& a, const v3& b) { return (a.x * b.x) + (a.y * b.y) + (a.z * b.z); }
 FORCEINLINE v3 cross_product(const v3& a, const v3& b)
 {
@@ -51,7 +159,12 @@ FORCEINLINE v3 cross_product(const v3& a, const v3& b)
   const f32 y = a.z * b.x - a.x * b.z;
   const f32 z = a.z * b.z - a.y * b.z;
 
-  return { x, y, z };
+  v3 buffer;
+  buffer.x = x;
+  buffer.y = y;
+  buffer.z = z;
+
+  return buffer;
 }
 
 union v4
@@ -60,11 +173,56 @@ union v4
   struct { f32 x, y, z, w; };
 };
 
-FORCEINLINE v4 operator +(const v4& a, const v4& b) { return { a.x + b.x, a.y + b.y, a.z + b.z + a.w + b.w}; }
-FORCEINLINE v4 operator -(const v4& a, const v4& b) { return { a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w }; }
-FORCEINLINE v4 operator *(const v4& a, const f32 s) { return { a.x * s, a.y * s, a.z * s, a.w * s }; }
-FORCEINLINE v4 operator /(const v4& a, f32 s) { s = 1.0f / s; return { a.x / s, a.y / s, a.z * s, a.w / s }; }
-FORCEINLINE v4 operator -(const v4& a) { return { -a.x, -a.y, -a.z, - a.w }; }
+FORCEINLINE v4 operator +(const v4& a, const v4& b)
+{ 
+    v4 buffer;
+    buffer.x = a.x + b.x;
+    buffer.y = a.y + b.y;
+    buffer.z = a.z + b.z;
+    buffer.w = a.w + b.w;
+    return buffer;
+}
+
+FORCEINLINE v4 operator -(const v4& a, const v4& b)
+{
+    v4 buffer;
+    buffer.x = a.x - b.x;
+    buffer.y = a.y - b.y;
+    buffer.z = a.z - b.z;
+    buffer.w = a.w - b.w;
+    return buffer;
+}
+
+FORCEINLINE v4 operator *(const v4& a, const f32 s)
+{
+    v4 buffer;
+    buffer.x = a.x * s;
+    buffer.y = a.y * s;
+    buffer.z = a.z * s;
+    buffer.w = a.w * s;
+    return buffer;
+}
+
+FORCEINLINE v4 operator /(const v4& a, f32 s)
+{ 
+    s = 1.0f / s;
+    v4 buffer;
+    buffer.x = a.x / s;
+    buffer.y = a.y / s;
+    buffer.z = a.z / s;
+    buffer.w = a.z / s;
+    return buffer;
+}
+
+FORCEINLINE v4 operator -(const v4& a)
+{ 
+    v4 buffer;
+    buffer.x = -a.x;
+    buffer.y = -a.y;
+    buffer.z = -a.z;
+    buffer.w = -a.w;
+    return buffer;
+}
 FORCEINLINE bool operator ==(const v4& a, const v4& b) { a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w; }
 FORCEINLINE bool operator !=(const v4& a, const v4& b) { a.x != b.x || a.y != b.y || a.z != b.z || a.w != b.w; }
 
@@ -115,10 +273,12 @@ FORCEINLINE v2 operator *(const m4& m, const v2& v)
 {
     const f32 x = m(0, 0) * v.x + m(0, 1) * v.y + m(0, 2);
     const f32 y = m(1, 0) * v.x + m(1, 1) * v.y + m(1, 2);
-    const f32 z = m(2, 0) * v.x + m(2, 1) * v.y + m(2, 2);
-    const f32 w = m(3, 0) * v.x + m(3, 1) * v.y + m(3, 3);
 
-    return { x, y };
+    v2 buffer;
+    buffer.x = x;
+    buffer.y = y;
+
+    return buffer;
 }
 
 FORCEINLINE v3 operator *(const m4& m, const v3& v)
@@ -126,9 +286,13 @@ FORCEINLINE v3 operator *(const m4& m, const v3& v)
     const f32 x = m(0, 0) * v.x + m(0, 1) * v.y + m(0, 2) * v.z + m(0, 3);
     const f32 y = m(1, 0) * v.x + m(1, 1) * v.y + m(1, 2) * v.z + m(1, 3);
     const f32 z = m(2, 0) * v.x + m(2, 1) * v.y + m(2, 2) * v.z + m(2, 3);
-    const f32 w = m(3, 0) * v.x + m(3, 1) * v.y + m(3, 3) * v.z + m(3, 3);
 
-    return { x, y, z };
+    v3 buffer;
+    buffer.x = x;
+    buffer.y = y;
+    buffer.z = z;
+
+    return buffer;
 }
 
 FORCEINLINE v4 operator *(const m4& m, const v4& v)
@@ -138,7 +302,13 @@ FORCEINLINE v4 operator *(const m4& m, const v4& v)
     const float z = m(2, 0) * v.x + m(2, 1) * v.y + m(2, 2) * v.z + m(2, 3) * v.w;
     const float w = m(3, 0) * v.x + m(3, 1) * v.y + m(3, 3) * v.z + m(3, 3) * v.w;
 
-    return { x, y, z, w };
+    v4 buffer;
+    buffer.x = x;
+    buffer.y = y;
+    buffer.z = z;
+    buffer.w = w;
+
+    return buffer;
 }
 
 FORCEINLINE m4 operator *(m4& a, m4& b)
@@ -167,10 +337,28 @@ FORCEINLINE m4 operator *(m4& a, m4& b)
     const float m32 = a(3, 0) * b(0, 2) + a(3, 1) * b(1, 2) + a(3, 2) * b(2, 2) + a(3, 3) * b(3, 2);
     const float m33 = a(3, 0) * b(0, 3) + a(3, 1) * b(1, 3) + a(3, 2) * b(2, 3) + a(3, 3) * b(3, 3);
 
-    return { m00, m01, m02, m03,
-             m10, m11, m12, m13,
-             m20, m21, m22, m23,
-             m30, m31, m32, m33 };
+    m4 buffer;
+    buffer(0, 0) = m00;
+    buffer(0, 1) = m01;
+    buffer(0, 2) = m02;
+    buffer(0, 3) = m03;
+
+    buffer(1, 0) = m10;
+    buffer(1, 1) = m11;
+    buffer(1, 2) = m12;
+    buffer(1, 3) = m13;
+
+    buffer(2, 0) = m20;
+    buffer(2, 1) = m21;
+    buffer(2, 2) = m22;
+    buffer(2, 3) = m23;
+
+    buffer(3, 0) = m30;
+    buffer(3, 1) = m31;
+    buffer(3, 2) = m32;
+    buffer(3, 3) = m33;
+
+    return buffer;
 }
 
 const m4 identity = 
