@@ -14,6 +14,8 @@
 #undef UNICODE
 #endif
 
+#define GL_GLEXT_PROTOTYPES
+
 #include <gl/GL.h>
 #include "khrplatform.h"
 #include "glext.h"
@@ -22,6 +24,15 @@
 #include "graphics.h"
 #include "memory.h"
 
+HMODULE gl_module;
+
+void* get_proc(const char *proc_name)
+{
+    void *proc = (void*)wglGetProcAddress(proc_name);
+    if (!proc) proc = (void*)GetProcAddress(gl_module, proc_name);
+
+    return proc;
+}
 
 LRESULT CALLBACK
 WindowProc(HWND window,
@@ -67,7 +78,6 @@ void blueprint_init()
     vert->pos.x = 1.0f;
     vert->pos.y = 2.0f;
     vert->pos.z = 3.0f;
-
 
     free_arena(arena);
 }
@@ -145,11 +155,9 @@ WinMain(HINSTANCE hinstance,
     HGLRC rc = wglCreateContext(dc);
     wglMakeCurrent(dc, rc);
 
-    PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = nullptr;
-    wglChoosePixelFormatARB = reinterpret_cast<PFNWGLCHOOSEPIXELFORMATARBPROC>(wglGetProcAddress("wglChoosePixelFormatARB"));
-
-    PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
-    wglCreateContextAttribsARB = reinterpret_cast<PFNWGLCREATECONTEXTATTRIBSARBPROC>(wglGetProcAddress("wglCreateContextAttribsARB"));
+   PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)get_proc("wglChoosePixelFormatARB");
+   PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)get_proc("wglCreateContextAttribsARB");
+   PFNGLGETSTRINGIPROC glGetString;
 
     HWND hwnd_real = CreateWindowEx(NULL,
                                     L"Blueprint",
