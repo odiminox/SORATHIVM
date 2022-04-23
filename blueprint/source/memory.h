@@ -1,5 +1,9 @@
 #pragma once
 
+#if (_MSC_VER >= 1500 && _MSC_VER <= 1600)
+#include <malloc.h>
+#endif
+
 #include "common.h"
 
 // x64 = align to 8 bytes
