@@ -14,25 +14,17 @@
 #undef UNICODE
 #endif
 
-#define GL_GLEXT_PROTOTYPES
-
-#include <gl/GL.h>
-#include "khrplatform.h"
-#include "glext.h"
-#include "wglext.h"
-
+#include "getprocs.h"
 #include "graphics.h"
 #include "memory.h"
 
 HMODULE gl_module;
 
-void* get_proc(const char *proc_name)
-{
-    void *proc = (void*)wglGetProcAddress(proc_name);
-    if (!proc) proc = (void*)GetProcAddress(gl_module, proc_name);
+MemArena* arena = NULL;
 
-    return proc;
-}
+Vertex* vert1 = NULL;
+Vertex* vert2 = NULL;
+Vertex* vert3 = NULL;
 
 LRESULT CALLBACK
 WindowProc(HWND window,
@@ -70,16 +62,27 @@ WindowProc(HWND window,
 
 void blueprint_init()
 {
-    Vertex* vert = NULL;
-    MemArena* arena = alloc_arena(64);
+    arena = alloc_arena(MEGABYTES(250));
 
-    MemBlock* block = alloc_block(arena, sizeof(*vert));
-    vert = (Vertex*)block;
-    vert->pos.x = 1.0f;
-    vert->pos.y = 2.0f;
-    vert->pos.z = 3.0f;
+    MemBlock* block1 = alloc_block(arena, sizeof(*vert1));
+    MemBlock* block2 = alloc_block(arena, sizeof(*vert2));
+    MemBlock* block3 = alloc_block(arena, sizeof(*vert3));
 
-    free_arena(arena);
+    vert1 = (Vertex*)block1;
+    vert2 = (Vertex*)block1;
+    vert3 = (Vertex*)block1;
+
+    vert1->pos.x = -1.0f;
+    vert1->pos.y = -1.0f;
+    vert1->pos.z = 0.0f;
+
+    vert2->pos.x = 1.0f;
+    vert2->pos.y = -1.0f;
+    vert2->pos.z = 0.0f;
+
+    vert3->pos.x = 0.0f;
+    vert3->pos.y = 1.0f;
+    vert3->pos.z = 0.0f;
 }
 
 void blueprint_update(MSG& msg, HDC& dc)
@@ -155,9 +158,11 @@ WinMain(HINSTANCE hinstance,
     HGLRC rc = wglCreateContext(dc);
     wglMakeCurrent(dc, rc);
 
-   PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)get_proc("wglChoosePixelFormatARB");
-   PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)get_proc("wglCreateContextAttribsARB");
-   PFNGLGETSTRINGIPROC glGetString;
+   wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)GETPROC("wglChoosePixelFormatARB");
+   wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)GETPROC("wglCreateContextAttribsARB");
+   glGenBuffers = (PFNGLGENBUFFERSPROC)GETPROC("glGenBuffers");
+   glBindBuffer = (PFNGLBINDBUFFERPROC)GETPROC("glBindBuffer");
+   glBufferData = (PFNGLBUFFERDATAPROC)GETPROC("glBufferData");
 
     HWND hwnd_real = CreateWindowEx(NULL,
                                     L"Blueprint",
@@ -220,8 +225,26 @@ WinMain(HINSTANCE hinstance,
 
     blueprint_init();
 
+    GLuint vertex_buffer;
+    glGenBuffers(1, &vertex_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+
+    u32 vert_size = sizeof(vert1->pos);
+    u32 vert_buffer_size =  sizeof(vert1->pos) * 3;
+
+    const GLfloat buffer_data[] = {
+       vert1->pos.x, vert1->pos.y, vert1->pos.z,
+       vert2->pos.x, vert2->pos.y, vert2->pos.z,
+       vert3->pos.x, vert3->pos.y, vert3->pos.z,
+    };
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vert_buffer_size), buffer_data, GL_STATIC_DRAW);
+
+
     MSG msg;
     blueprint_update(msg, dc_real);
+
+    free_arena(arena);
 
     return msg.wParam;
 }

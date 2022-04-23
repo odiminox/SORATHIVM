@@ -2,13 +2,13 @@
 
 
 #if (_MSC_VER >= 1500 && _MSC_VER <= 1600)
-    typedef float					f32;
-    typedef double					f64;
+    typedef float                   f32;
+    typedef double                  f64;
 
-    typedef signed char				i8;
-    typedef short int				i16;
-    typedef short int				i32;
-    typedef long long int			i64;
+    typedef signed char             i8;
+    typedef short int               i16;
+    typedef short int               i32;
+    typedef long long int           i64;
 
     typedef unsigned char           u8;
     typedef unsigned short int      u16;
@@ -39,6 +39,9 @@
     typedef uintptr_t uword;
 #endif
 
+#define KILOBYTES(value) ((value)*1024)
+#define MEGABYTES(value) (KILOBYTES(value)*1024)
+#define GIGABYTES(value) (MEGABYTES((u64)value)*1024)
 
 typedef char* STRING;
 typedef const char* CONST_STRING;
