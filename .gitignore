@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+*.pd
 
 blueprint/*vcproj*
 blueprint/x64
