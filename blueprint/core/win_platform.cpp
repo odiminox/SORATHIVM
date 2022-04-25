@@ -24,11 +24,6 @@ extern "C"{
 
 HMODULE gl_module;
 
-MemArena* arena = NULL;
-
-Vertex* vert1 = NULL;
-Vertex* vert2 = NULL;
-Vertex* vert3 = NULL;
 
 LRESULT CALLBACK
 WindowProc(HWND window,
@@ -66,27 +61,7 @@ WindowProc(HWND window,
 
 void blueprint_init()
 {
-    arena = alloc_arena(MEGABYTES(250));
 
-    MemBlock* block1 = alloc_block(arena, sizeof(*vert1));
-    MemBlock* block2 = alloc_block(arena, sizeof(*vert2));
-    MemBlock* block3 = alloc_block(arena, sizeof(*vert3));
-
-    vert1 = (Vertex*)block1;
-    vert2 = (Vertex*)block1;
-    vert3 = (Vertex*)block1;
-
-    vert1->pos.x = -1.0f;
-    vert1->pos.y = -1.0f;
-    vert1->pos.z = 0.0f;
-
-    vert2->pos.x = 1.0f;
-    vert2->pos.y = -1.0f;
-    vert2->pos.z = 0.0f;
-
-    vert3->pos.x = 0.0f;
-    vert3->pos.y = 1.0f;
-    vert3->pos.z = 0.0f;
 }
 
 void blueprint_update(MSG& msg, HDC& dc)
@@ -227,16 +202,41 @@ WinMain(HINSTANCE hinstance,
 
     ShowWindow(hwnd_real, ncmdshow);
 
-    //blueprint_init();
+    MemArena* arena = NULL;
 
-    /*GLuint vertex_buffer;
+    Vertex* vert1 = NULL;
+    Vertex vert2;
+    Vertex vert3;
+
+    arena = alloc_arena(MEGABYTES(20));
+
+    MemBlock* block1 = alloc_block(arena, sizeof(*vert1));
+
+    vert1 = (Vertex*)block1;
+
+    vert1->pos.x = -1.0f;
+    vert1->pos.y = -1.0f;
+    vert1->pos.z = 0.0f;
+
+    vert2.pos.x = 1.0f;
+    vert2.pos.y = -1.0f;
+    vert2.pos.z = 0.0f;
+
+    vert3.pos.x = 0.0f;
+    vert3.pos.y = 1.0f;
+    vert3.pos.z = 0.0f;
+
+
+    blueprint_init();
+
+    GLuint vertex_buffer;
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 
     u32 vert_size = sizeof(vert1->pos);
-    u32 vert_buffer_size =  sizeof(vert1->pos) * 3;*/
+    u32 vert_buffer_size =  sizeof(vert1->pos) * 3;
 
-  /*  const GLfloat buffer_data[] = {
+    /*const GLfloat buffer_data[] = {
        vert1->pos.x, vert1->pos.y, vert1->pos.z,
        vert2->pos.x, vert2->pos.y, vert2->pos.z,
        vert3->pos.x, vert3->pos.y, vert3->pos.z,
@@ -259,8 +259,6 @@ extern "C" void __cdecl WinMainCRTStartup()
     _init_atexit();
     _initterm(__xc_a, __xc_z);         // Call C++ constructors
 
-    
-    //int ret = main(argc, _argv, 0);    // Don't handle environment strings
     int ret = WinMain((HINSTANCE)0x400000,0, 0,SW_SHOWDEFAULT);
 
     _doexit();

@@ -35,7 +35,6 @@ FORCEINLINE MemArena* alloc_arena(usize size)
     MemArena* arena = (MemArena*)malloc(sizeof(MemArena));
     if (!arena) return NULL;
     arena->buffer = (u8*)malloc(size);
-    arena->buffer = NULL;
     arena->total_size = size;
     arena->total_used = 0;
     arena->head = NULL;
@@ -74,12 +73,12 @@ FORCEINLINE MemBlock* find_first_block(MemArena* arena, usize size)
 
 FORCEINLINE MemBlock* alloc_block(MemArena* arena, usize size)
 {
-    //ASSERT(size > 0)
+    ASSERT(size > 0)
     uword offset = (uword)arena->total_used;
     if ((offset + size)  <= arena->total_size)
     {
         void* ptr = &arena->buffer[offset];
-
+        
         MemBlock* block = (MemBlock*)ptr;
         arena->total_used += size;
         memset(block, 0, size);

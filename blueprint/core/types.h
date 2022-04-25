@@ -54,4 +54,5 @@ void assert_handler(const char* msg, const char* file, int line)
 
 extern "C" void *malloc(size_t size);
 extern "C" void *memset(void *dst, int val, size_t size);
+#pragma intrinsic(malloc)
 #pragma intrinsic(memset)
