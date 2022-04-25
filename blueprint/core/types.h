@@ -51,3 +51,7 @@ void assert_handler(const char* msg, const char* file, int line)
     //fprintf(stdout, "%s:%d:4: error: assertion \"%s\" failed in function \n", file, line, msg);
     //abort();
 }
+
+extern "C" void *malloc(size_t size);
+extern "C" void *memset(void *dst, int val, size_t size);
+#pragma intrinsic(memset)

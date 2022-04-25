@@ -1,11 +1,6 @@
 #pragma once
 
-#if (_MSC_VER >= 1500 && _MSC_VER <= 1600)
-#include <malloc.h>
-#endif
-
 #include "common.h"
-
 // x64 = align to 8 bytes
 // x86 = align to 4 bytes
 FORCEINLINE usize align(usize n) { return (n + sizeof(uword) - 1) & ~(sizeof(uword) - 1); }
@@ -40,6 +35,7 @@ FORCEINLINE MemArena* alloc_arena(usize size)
     MemArena* arena = (MemArena*)malloc(sizeof(MemArena));
     if (!arena) return NULL;
     arena->buffer = (u8*)malloc(size);
+    arena->buffer = NULL;
     arena->total_size = size;
     arena->total_used = 0;
     arena->head = NULL;
@@ -78,7 +74,7 @@ FORCEINLINE MemBlock* find_first_block(MemArena* arena, usize size)
 
 FORCEINLINE MemBlock* alloc_block(MemArena* arena, usize size)
 {
-    ASSERT(size > 0)
+    //ASSERT(size > 0)
     uword offset = (uword)arena->total_used;
     if ((offset + size)  <= arena->total_size)
     {

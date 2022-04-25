@@ -17,6 +17,10 @@
 #include "getprocs.h"
 #include "graphics.h"
 #include "memory.h"
+extern "C"{
+    #include "libct.h"
+}
+
 
 HMODULE gl_module;
 
@@ -215,30 +219,30 @@ WinMain(HINSTANCE hinstance,
 
     HGLRC rc_real = wglCreateContextAttribsARB(dc_real, 0, context_attribs);
 
-    /*wglMakeCurrent(dc, NULL);
-    wglDeleteContext(rc);
-    ReleaseDC(hwnd, dc);
-    DestroyWindow(hwnd);*/
+    //wglMakeCurrent(dc, NULL);
+    //wglDeleteContext(rc);
+    //ReleaseDC(hwnd, dc);
+    //DestroyWindow(hwnd);
     wglMakeCurrent(dc_real, rc_real);
 
     ShowWindow(hwnd_real, ncmdshow);
 
-    blueprint_init();
+    //blueprint_init();
 
-    GLuint vertex_buffer;
+    /*GLuint vertex_buffer;
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
 
     u32 vert_size = sizeof(vert1->pos);
-    u32 vert_buffer_size =  sizeof(vert1->pos) * 3;
+    u32 vert_buffer_size =  sizeof(vert1->pos) * 3;*/
 
-    const GLfloat buffer_data[] = {
+  /*  const GLfloat buffer_data[] = {
        vert1->pos.x, vert1->pos.y, vert1->pos.z,
        vert2->pos.x, vert2->pos.y, vert2->pos.z,
        vert3->pos.x, vert3->pos.y, vert3->pos.z,
     };
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vert_buffer_size), buffer_data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vert_buffer_size), buffer_data, GL_STATIC_DRAW);*/
 
 
     MSG msg;
@@ -249,3 +253,16 @@ WinMain(HINSTANCE hinstance,
     return msg.wParam;
 }
 
+extern "C" void __cdecl WinMainCRTStartup()
+{
+    int argc = _init_args();
+    _init_atexit();
+    _initterm(__xc_a, __xc_z);         // Call C++ constructors
+
+    
+    //int ret = main(argc, _argv, 0);    // Don't handle environment strings
+    int ret = WinMain((HINSTANCE)0x400000,0, 0,SW_SHOWDEFAULT);
+
+    _doexit();
+    ExitProcess(ret);
+}
