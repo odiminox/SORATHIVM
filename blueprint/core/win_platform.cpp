@@ -21,6 +21,22 @@ extern "C"{
     #include "libct.h"
 }
 
+// set rounding mode to truncate
+//  from https://web.archive.org/web/20160304215813/http://www.musicdsp.org/showone.php?id=246
+static short control_word;
+static short control_word2;
+
+inline void SetFloatingPointRoundingToTruncate()
+{
+    __asm
+    {
+        fstcw   control_word                // store fpu control word
+        mov     dx, word ptr [control_word]
+        or      dx, 0x0C00                  // rounding: truncate
+        mov     control_word2, dx
+        fldcw   control_word2               // load modfied control word
+    }
+}
 
 HMODULE gl_module;
 
@@ -88,6 +104,8 @@ WinMain(HINSTANCE hinstance,
     LPSTR lpcmdline,
     int ncmdshow)
 {
+    SetFloatingPointRoundingToTruncate();
+
     HWND hwnd;
     WNDCLASSEX wc;
 
