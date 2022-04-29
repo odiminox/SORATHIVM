@@ -30,6 +30,10 @@
 *.out
 *.app
 
+#vs
+*.user
+*.vcproj.*
+
 SORATHIVM/x64
 SORATHIVM/.vs
 vs
