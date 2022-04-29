@@ -119,13 +119,13 @@ WinMain(HINSTANCE hinstance,
     wc.hInstance = hinstance;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-    wc.lpszClassName = L"Blueprint";
+    wc.lpszClassName = L"SORATHIVM";
 
     RegisterClassEx(&wc);
 
     hwnd = CreateWindowEx(NULL,
-                          L"Blueprint",
-                          L"Blueprint",
+                          L"SORATHIVM",
+                          L"SORATHIVM",
                           WS_OVERLAPPEDWINDOW,
                           300,    // x-position of the window
                           300,    // y-position of the window
@@ -162,8 +162,8 @@ WinMain(HINSTANCE hinstance,
    glBufferData = (PFNGLBUFFERDATAPROC)GETPROC("glBufferData");
 
     HWND hwnd_real = CreateWindowEx(NULL,
-                                    L"Blueprint",
-                                    L"Blueprint",
+                                    L"SORATHIVM",
+                                    L"SORATHIVM",
                                     WS_OVERLAPPEDWINDOW | WS_SYSMENU | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
                                     300,    // x-position of the window
                                     300,    // y-position of the window

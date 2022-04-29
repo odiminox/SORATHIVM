@@ -37,3 +37,8 @@
 SORATHIVM/x64
 SORATHIVM/.vs
 vs
+Builds/
+SORATHIVM/include/tlibc/Debug/
+SORATHIVM/include/tlibc/Release
+SORATHIVM/.vs
+SORATHIVM/SORATHIVM/.vs
